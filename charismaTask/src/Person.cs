@@ -43,13 +43,13 @@ namespace CharismaTask.Src
     }
 }
 
-// Define a schedule entry
-public class Schedule
-{
-    public DayOfWeek WeekDay { get; set; }
-    public TimeSpan StartTime { get; set; }
-    public TimeSpan EndTime { get; set; }
-}
+    // Define a schedule entry
+    public class Schedule
+    {
+        public DayOfWeek WeekDay { get; set; }
+        public TimeSpan StartTime { get; set; }
+        public TimeSpan EndTime { get; set; }
+    }
 
 
     public class Patient : Person

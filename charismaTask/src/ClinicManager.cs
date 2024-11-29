@@ -7,7 +7,7 @@ namespace CharismaTask.Src
     private List<Appointment> Appointments { get; set; } = new List<Appointment>();
 
     // Schedule an appointment
-    public bool ScheduleAppointment(Patient patient, Doctor doctor, DateTime startTime, int duration)
+    public bool ScheduleAppointment(Patient patient, Doctor doctor, DateTime startTime, int duration, Money consultationFee)
     {
         // Check if the appointment falls within valid hours and duration
         if (!IsValidAppointmentTime(doctor, startTime, duration))
@@ -28,7 +28,8 @@ namespace CharismaTask.Src
             doctor,
             patient,
             startTime,
-            startTime.AddMinutes(duration)
+            startTime.AddMinutes(duration),
+            consultationFee
         );
         doctor.Appointments.Add(appointment);
         patient.Appointments.Add(appointment);
