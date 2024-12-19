@@ -1,0 +1,73 @@
+# Ignore Visual Studio specific files
+*.csproj.user
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Rider/JetBrains IDE files
+.idea/
+.idea_modules/
+*.iml
+out/
+
+# Build files and directories
+bin/
+obj/
+Debug/
+Release/
+
+# Build artifacts
+*.dll
+*.exe
+*.app
+*.so
+*.dylib
+*.log
+*.pdb
+*.mdb
+
+# NuGet packages
+*.nupkg
+*.snupkg
+packages/
+.nuget/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# Rider workspace files
+*.rider.userprefs
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+*.swp
+*.pid
+*.seed
+*.pid.lock
+
+# Resharper settings
+_ReSharper*/
+*.[Rr]e[Ss]harper
+
+# Coverage output
+coverage/
+*.coverage
+*.coveragexml
+*.cov
+*.cov.json
+
+# dotCover
+*.dotCover
+
+# Other
+*.orig
+
