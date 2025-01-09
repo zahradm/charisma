@@ -1,3 +1,4 @@
+using AppointmentDomain;
 using Xunit;
 
 namespace AppointmentTest;
@@ -34,8 +35,8 @@ public class ClinicTests
         var (doctor, patient, startTime, duration) = builder.BuildAppointmentDetails();
 
         
-        var exception = Assert.Throws<Exception>(() => clinic.CreateNewAppointment(patient, doctor, startTime, duration));
-        Assert.Equal("Unable to schedule the appointment.", exception.Message);
+        var exception = Assert.Throws<DoctorUnavailableException>(() => clinic.CreateNewAppointment(patient, doctor, startTime, duration));
+        Assert.Equal($"Doctor {doctor.LastName} is unavailable at the requested time.", exception.Message);
     }
 
     [Fact]
@@ -51,7 +52,7 @@ public class ClinicTests
         var startTime2 = startTime1.AddMinutes(5);
 
         
-        var exception = Assert.Throws<Exception>(() => clinic.CreateNewAppointment(patient, doctor, startTime2, duration));
-        Assert.Equal("Unable to schedule the appointment.", exception.Message);
+        var exception = Assert.Throws<AppointmentOverlapException>(() => clinic.CreateNewAppointment(patient, doctor, startTime2, duration));
+        Assert.Equal($"Patient {patient.FirstName} {patient.LastName} has an overlapping appointment.", exception.Message);
     }
 }

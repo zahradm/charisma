@@ -4,7 +4,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        var clinic = new Clinic();
+        var clinic = new Clinic(new StandardWorkingHoursPolicy());
         var doctor = new Doctor("Ali", "Ahmadi", "09123456789", "General");
         var patient = new Patient("Sara", "Rahimi", "09234567890", 30, "Tamin");
 
@@ -20,7 +20,7 @@ class Program
             Console.WriteLine($"Date {DateTime.Now.AddDays(3).AddHours(15)} for Doctor {doctor.LastName}.");
 
             var appointment = clinic.CreateNewAppointment(patient, doctor, appointmentDate, 10);
-            Console.WriteLine($"Appointment scheduled for {appointment.Patient.FirstName} with Dr. {appointment.Doctor.LastName}");
+            Console.WriteLine($"Appointment scheduled for {appointment.Patient.FirstName} {appointment.Patient.LastName} with Dr. {appointment.Doctor.LastName}");
         }
         catch (Exception ex)
         {

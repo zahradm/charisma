@@ -13,7 +13,7 @@ public class ClinicBuilder
 
     public ClinicBuilder()
     {
-        _clinic = new Clinic();
+        _clinic = new Clinic(new StandardWorkingHoursPolicy());
         _doctor = new Doctor("Ali", "Ahmadi", "09123456789", "General");
         _patient = new Patient("Sara", "Rahimi", "09234567890", 30, "Tamin");
         _doctorSchedule = new List<(DayOfWeek, TimeSpan, TimeSpan)>
@@ -35,7 +35,7 @@ public class ClinicBuilder
     public ClinicBuilder WithDoctorSchedule(List<(DayOfWeek, TimeSpan, TimeSpan)> schedule)
     {
         _doctorSchedule = schedule;
-        _clinic = new Clinic();
+        _clinic = new Clinic(new StandardWorkingHoursPolicy());
         SetupDefaults();
         return this;
     }

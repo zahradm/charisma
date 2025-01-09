@@ -1,7 +1,15 @@
+using AppointmentDomain.Interfaces;
+
 namespace AppointmentDomain
 {
     public class Clinic
-    {
+    {   
+        private readonly IWorkingHoursPolicy _workingHoursPolicy;
+
+        public Clinic(IWorkingHoursPolicy workingHoursPolicy)
+        {
+            _workingHoursPolicy = workingHoursPolicy;
+        }
         private List<Doctor> Doctors { get; set; } = new List<Doctor>();
         private List<Patient> Patients { get; set; } = new List<Patient>();
         private List<Appointment> Appointments { get; set; } = new List<Appointment>();
@@ -45,11 +53,8 @@ namespace AppointmentDomain
 
         private bool IsValidAppointmentTime(Doctor doctor, DateTime startTime, int duration)
         {
-            if (startTime.DayOfWeek == DayOfWeek.Thursday || startTime.DayOfWeek == DayOfWeek.Friday)
-                throw new InvalidAppointmentTimeException("Appointments cannot be scheduled on Thursday or Friday.");
-            
-            if (startTime.TimeOfDay < TimeSpan.FromHours(9) || startTime.TimeOfDay > TimeSpan.FromHours(18))
-                throw new InvalidAppointmentTimeException("Appointments must be scheduled between 9:00 AM and 6:00 PM.");
+            if (!_workingHoursPolicy.IsWithinWorkingHours(startTime, duration))
+                throw new InvalidAppointmentTimeException("Invalid working hours.");
             
             if ((doctor.Type == "General" && (duration < 5 || duration > 15)) ||
                 (doctor.Type == "Specialist" && (duration < 10 || duration > 30)))
@@ -94,7 +99,10 @@ namespace AppointmentDomain
                 throw new PatientLimitReachedException($"Patient {patient.FirstName} {patient.LastName} has already reached the maximum number of appointments for the day.");
 
             bool hasOverlap = Appointments.Any(a =>
-                a.Patient == patient && a.StartTime < endTime && a.EndTime > startTime);
+                a.Patient == patient && 
+                a.StartTime < endTime && 
+                a.EndTime > startTime);
+    
 
             if (hasOverlap)
                 throw new AppointmentOverlapException($"Patient {patient.FirstName} {patient.LastName} has an overlapping appointment.");
@@ -138,4 +146,27 @@ namespace AppointmentDomain
     {
         public AppointmentOverlapException(string message) : base(message) { }
     }
+    
+    public class AllOpenWorkingHoursPolicy : IWorkingHoursPolicy
+    {
+        public bool IsWithinWorkingHours(DateTime startTime, int duration)
+        {
+            
+            return true;
+        }
+    }
+    public class StandardWorkingHoursPolicy : IWorkingHoursPolicy
+    {
+        public bool IsWithinWorkingHours(DateTime startTime, int duration)
+        {
+            if (startTime.DayOfWeek == DayOfWeek.Thursday || startTime.DayOfWeek == DayOfWeek.Friday)
+                return false;
+
+            if (startTime.TimeOfDay < TimeSpan.FromHours(9) || startTime.TimeOfDay > TimeSpan.FromHours(18))
+                return false;
+
+            return true;
+        }
+    }
+
 }
